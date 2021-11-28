@@ -17,7 +17,7 @@ public class Player {
         putMoney();
         lottoCntPurchase = inputMoney / LOTTO_PRICE;
         purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
-        decideBuyManualLotto();
+        decideToBuyManualLottoCnt();
         System.out.println("수동으로 구매할 번호를 입력해 주세요.");
         for (int i = 0; i < manualLottoCnt; i++) {
             String inputLottoNumbers = SC.nextLine();
@@ -32,7 +32,7 @@ public class Player {
         }
     }
 
-    private void decideBuyManualLotto() {
+    private void decideToBuyManualLottoCnt() {
         System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
         String manualLottoCntString = SC.nextLine();
         validateManualLottoCntForm(manualLottoCntString);
