@@ -10,7 +10,6 @@ public class Player {
     private int purchaseAmount = 0;
     private int lottoCntPurchase = 0;
     private int manualLottoCnt;
-    private int autoLottoCnt;
     private ArrayList<LottoTicket> tickets = new ArrayList<>();
 
     public void playLotto() {
@@ -18,13 +17,8 @@ public class Player {
         lottoCntPurchase = inputMoney / LOTTO_PRICE;
         purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
         decideToBuyManualLottoCnt();
-        decideToBytAutoLottoCnt();
         takeTheLottoManually();
         // takeTheLottoAuto();
-    }
-
-    private void decideToBytAutoLottoCnt() {
-        this.autoLottoCnt = purchaseAmount - manualLottoCnt;
     }
 
     private void takeTheLottoManually() {
