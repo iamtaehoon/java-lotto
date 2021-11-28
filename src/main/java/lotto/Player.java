@@ -20,7 +20,14 @@ public class Player {
         decideToBuyManualLottoCnt();
         takeTheLottoManually();
         lottoMachine.takeLottoAuto(lottoCntPurchase - manualLottoCnt);
-        lottoMachine.showAllTickets();
+        showAllTickets();
+    }
+
+    private void showAllTickets() {
+        System.out.println("수동으로 " + manualLottoCnt + "장, 자동으로 " + (lottoCntPurchase - manualLottoCnt) + "개를 구매했습니다.");
+        for (LottoTicket ticket : tickets) {
+            System.out.println(ticket);
+        }
     }
 
     private void takeTheLottoManually() {

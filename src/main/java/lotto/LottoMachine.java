@@ -25,14 +25,10 @@ public class LottoMachine {
             ballNum = 1 + random.nextInt(45);
             if (!alreadyShown[ballNum]) {
                 lottoBallList.add(ballNum);
+                alreadyShown[ballNum] = true;
             }
         }
         tickets.add(new LottoTicket(lottoBallList));
     }
 
-    public void showAllTickets() {
-        for (LottoTicket ticket : tickets) {
-            System.out.println(ticket);
-        }
-    }
 }
