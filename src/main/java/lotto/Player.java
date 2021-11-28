@@ -1,55 +1,60 @@
 package lotto;
 
 import static lotto.Application.*;
+import static util.Constant.*;
 
 import java.util.ArrayList;
 
 public class Player {
-    public static int LOTTO_PRICE = 1000;
+    private ArrayList<LottoTicket> tickets = new ArrayList<>();
+    private LottoMachine lottoMachine = new LottoMachine(tickets);
     private int inputMoney = 0;
     private int purchaseAmount = 0;
     private int priceAmount = 0;
-    private int lottoCntPurchase = 0;
+    private int lottoTotalCnt = 0;
     private int manualLottoCnt;
-    private ArrayList<LottoTicket> tickets = new ArrayList<>();
-    private LottoMachine lottoMachine = new LottoMachine(tickets);
 
     public void playLotto() {
         putMoney();
-        lottoCntPurchase = inputMoney / LOTTO_PRICE;
-        purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
-        decideToBuyManualLottoCnt();
-        takeTheLottoManually();
-        lottoMachine.takeLottoAuto(lottoCntPurchase - manualLottoCnt);
+        lottoTotalCnt = inputMoney / LOTTO_PRICE;
+        purchaseAmount = lottoTotalCnt * LOTTO_PRICE;
+        decideManualLottoCnt();
+        takeLottosManually();
+        lottoMachine.takeLottoAuto(lottoTotalCnt - manualLottoCnt);
         showAllTickets();
         priceAmount = lottoMachine.getResult();
-        System.out.println("purchaseAmount = " + purchaseAmount);
-        System.out.println("priceAmount = " + priceAmount);
+        // TODO: 나중에 결과값으로 바꿔줄거. 일단 제대로 결과가 출력되는지 확인을 위한 코드
+        // System.out.println("purchaseAmount = " + purchaseAmount);
+        // System.out.println("priceAmount = " + priceAmount);
     }
 
     private void showAllTickets() {
-        System.out.println("수동으로 " + manualLottoCnt + "장, 자동으로 " + (lottoCntPurchase - manualLottoCnt) + "개를 구매했습니다.");
+        System.out.println("수동으로 " + manualLottoCnt + "장, 자동으로 " + (lottoTotalCnt - manualLottoCnt) + "개를 구매했습니다.");
         for (LottoTicket ticket : tickets) {
             System.out.println(ticket);
         }
     }
 
-    private void takeTheLottoManually() {
-        System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+    private void takeLottosManually() {
+        System.out.println(PUT_NUMBER_MANNUALY_MESSAGE);
         for (int i = 0; i < manualLottoCnt; i++) {
-            String inputLottoNumbers = SC.nextLine();
-            String[] lottoDigitNumbersString = inputLottoNumbers.split(", ");
-            ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
-            for (String lottoDigitNumberString : lottoDigitNumbersString) {
-                int lottoNumber = validateStringToInteger(lottoDigitNumberString);
-                lottoDigitNumbers.add(lottoNumber);
-            }
-            tickets.add(new LottoTicket(lottoDigitNumbers));
+            takeEachLottoManually();
         }
 
     }
 
-    private void decideToBuyManualLottoCnt() {
+    private void takeEachLottoManually() {
+        String inputLottoNumbers = SC.nextLine();
+        String[] lottoDigitNumbersString = inputLottoNumbers.split(", ");
+        ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
+        for (String lottoDigitNumberString : lottoDigitNumbersString) {
+            int lottoNumber = validateStringToInteger(lottoDigitNumberString);
+            lottoDigitNumbers.add(lottoNumber);
+        }
+        tickets.add(new LottoTicket(lottoDigitNumbers));
+    }
+
+    private void decideManualLottoCnt() {
         System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
         String manualLottoCntString = SC.nextLine();
         validateManualLottoCntForm(manualLottoCntString);
@@ -68,13 +73,13 @@ public class Player {
     }
 
     private void validateManualLottoCntIsSmallerThanTotal(int manualLottoCnt) {
-        if (lottoCntPurchase < manualLottoCnt) {
+        if (lottoTotalCnt < manualLottoCnt) {
             throw new IllegalArgumentException("구매할 로또 개수보다 더 많은 수동 로또를 살 수 없습니다.");
         }
     }
 
     private void putMoney() {
-        System.out.println("구입금액을 입력해 주세요.");
+        System.out.println(PUT_MONEY_MESSAGE);
         String inputMoneyString = SC.nextLine(); // inputMoney는 로또 한장 이상의 금액이어야함.
         validateMoneyForm(inputMoneyString);
     }
