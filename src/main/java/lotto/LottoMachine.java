@@ -1,5 +1,7 @@
 package lotto;
 
+import static lotto.Application.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,5 +32,4 @@ public class LottoMachine {
         }
         tickets.add(new LottoTicket(lottoBallList));
     }
-
 }
