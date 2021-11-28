@@ -15,6 +15,7 @@ public class Player {
         lottoCntPurchase = inputMoney / LOTTO_PRICE;
         purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
         decideBuyManualLotto();
+
     }
 
     private void decideBuyManualLotto() {
