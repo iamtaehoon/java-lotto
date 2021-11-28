@@ -20,13 +20,7 @@ public class Player {
         decideToBuyManualLottoCnt();
         takeTheLottoManually();
         lottoMachine.takeLottoAuto(lottoCntPurchase - manualLottoCnt);
-        System.out.println(tickets.stream().count());
-        for (LottoTicket ticket : tickets) {
-            for (int ballNum : ticket.getLottoNum()) {
-                System.out.print(ballNum+", ");
-            }
-            System.out.println();
-        }
+        lottoMachine.showAllTickets();
     }
 
     private void takeTheLottoManually() {

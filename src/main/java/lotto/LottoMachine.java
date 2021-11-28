@@ -29,4 +29,10 @@ public class LottoMachine {
         }
         tickets.add(new LottoTicket(lottoBallList));
     }
+
+    public void showAllTickets() {
+        for (LottoTicket ticket : tickets) {
+            System.out.println(ticket);
+        }
+    }
 }
