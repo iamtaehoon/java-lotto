@@ -2,6 +2,8 @@ package lotto;
 
 import static lotto.Application.*;
 
+import java.util.ArrayList;
+
 public class Player {
     public static int LOTTO_PRICE = 1000;
     private int inputMoney = 0;
@@ -9,17 +11,29 @@ public class Player {
     private int lottoCntPurchase = 0;
     private int manualLottoCnt;
     private int autoLottoCnt;
+    private ArrayList<LottoTicket> tickets = new ArrayList<>();
 
     public void playLotto() {
         putMoney();
         lottoCntPurchase = inputMoney / LOTTO_PRICE;
         purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
         decideBuyManualLotto();
-
+        System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+        for (int i = 0; i < manualLottoCnt; i++) {
+            String inputLottoNumbers = SC.nextLine();
+            System.out.println("inputLottoNumbers = " + inputLottoNumbers);
+            String[] lottoDigitNumbersString = inputLottoNumbers.split(", ");
+            ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
+            for (String lottoDigitNumberString : lottoDigitNumbersString) {
+                int lottoNumber = validateStringToInteger(lottoDigitNumberString);
+                lottoDigitNumbers.add(lottoNumber);
+            }
+            tickets.add(new LottoTicket(lottoDigitNumbers));
+        }
     }
 
     private void decideBuyManualLotto() {
-        System.out.println("수동으로 구매할 로또 수를 입력해 주세요");
+        System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
         String manualLottoCntString = SC.nextLine();
         validateManualLottoCntForm(manualLottoCntString);
 
