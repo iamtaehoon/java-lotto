@@ -28,4 +28,23 @@ public class LottoTicket {
         }
         return numbersOnTicket;
     }
+
+    public int matchNumbersCnt(ArrayList<Integer> winningNumList) {
+        int answer = 0;
+        for (int i = 0; i < 6; i++) {
+            if (winningNumList.get(i) == lottoNums[i]) {
+                answer += 1;
+            }
+        }
+        return answer;
+    }
+
+    public boolean winSecondPride(int bonusBallNum) {
+        for (int lottoNum : lottoNums) {
+            if (bonusBallNum == lottoNum) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
