@@ -85,7 +85,7 @@ public class LottoMachine {
     }
 
     private void makeWinningNum(ArrayList<Integer> winningNumList) {
-        String[] winningNumsString = SC.nextLine().split(", ");
+        String[] winningNumsString = SC.nextLine().split(SPLIT_REGEX);
         for (String eachDigitWinningNumString : winningNumsString) {
             int eachDigitWinningNum = validateStringToInteger(eachDigitWinningNumString);
             winningNumList.add(eachDigitWinningNum);
@@ -93,7 +93,7 @@ public class LottoMachine {
     }
 
     private int validateStringToInteger(String input) {
-        if (!input.matches("-?\\d+")) {
+        if (!input.matches(INT_REGEX)) {
             throw new IllegalArgumentException(INPUT_INVALID_MESSAGE);
         }
         return Integer.parseInt(input);

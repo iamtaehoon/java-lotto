@@ -17,13 +17,14 @@ public class Constant {
         "5개 일치, 보너스 볼 일치(30000000원) - ", "6개 일치 (2000000000원)- "};
     public static String RESULT_SENTENCE_BACK = "개";
 
-
     public static String INT_REGEX = "-?\\d+";
+    public static String SPLIT_REGEX =", ";
+
     public static String PUT_MONEY_MESSAGE = "구입금액을 입력해 주세요.";
     public static String DECIDE_MANUAL_LOTTO_COUNT_MESSAGE = "수동으로 구매할 로또 수를 입력해 주세요.";
     public static String PUT_NUMBER_MANNUALY_MESSAGE = "수동으로 구매할 번호를 입력해 주세요.";
     public static String CANT_NEGATIVE_MESSAGE = "구매할 로또 개수는 음수가 될 수 없습니다.";
-    public static String CANT_BUY_MORE_THAN_TOTAL_MESSAGE= "구매할 로또 개수보다 더 많은 수동 로또를 살 수 없습니다.";
+    public static String CANT_BUY_MORE_THAN_TOTAL_MESSAGE = "구매할 로또 개수보다 더 많은 수동 로또를 살 수 없습니다.";
     public static String LOTTO_RANGE_ERROR_MESSAGE = "로또 번호는 1~45까지만 가능합니다.";
     public static String INPUT_INVALID_MESSAGE = "올바른 금액을 입력해주세요.";
     public static String LACK_OF_MONEY_MESSAGE = "로또를 구매할 금액이 부족합니다.";

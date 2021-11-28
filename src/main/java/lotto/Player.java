@@ -22,8 +22,9 @@ public class Player {
         showAllTickets();
         priceAmount = lottoMachine.getResult();
         // TODO: 나중에 결과값으로 바꿔줄거. 일단 제대로 결과가 출력되는지 확인을 위한 코드
-        System.out.println("purchaseAmount = " + purchaseAmount);
-        System.out.println("priceAmount = " + priceAmount);
+        double result = (double)priceAmount / purchaseAmount;
+
+        System.out.println("총 수익률은 "+String.format("%.2f",result)+"%입니다.");
     }
 
     private void showAllTickets() {
@@ -42,7 +43,7 @@ public class Player {
 
     private void takeEachLottoManually() {
         String inputLottoNumbers = SC.nextLine();
-        String[] lottoDigitNumbersString = inputLottoNumbers.split(", ");
+        String[] lottoDigitNumbersString = inputLottoNumbers.split(SPLIT_REGEX);
         ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
         for (String lottoDigitNumberString : lottoDigitNumbersString) {
             int lottoNumber = validateStringToInteger(lottoDigitNumberString);
@@ -77,7 +78,7 @@ public class Player {
 
     private void putMoney() {
         System.out.println(PUT_MONEY_MESSAGE);
-        String inputMoneyString = SC.nextLine(); // inputMoney는 로또 한장 이상의 금액이어야함.
+        String inputMoneyString = SC.nextLine();
         validateMoneyForm(inputMoneyString);
         lottoTotalCnt = inputMoney / LOTTO_PRICE;
         purchaseAmount = lottoTotalCnt * LOTTO_PRICE;
