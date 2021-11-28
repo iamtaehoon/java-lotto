@@ -33,8 +33,8 @@ public class LottoMachine {
         tickets.add(new LottoTicket(lottoBallList));
     }
 
-    public void getResult() { // 다시 로또머신으로 위치를 이동시키자. 그게 맞는거임. 로또기계가 결과를 출력해주는게 책임 분배를 잘 한거라고 생각함.
-        int[] result = new int[5+1];
+    public int getResult() { // 다시 로또머신으로 위치를 이동시키자. 그게 맞는거임. 로또기계가 결과를 출력해주는게 책임 분배를 잘 한거라고 생각함.
+        int[] result = new int[5 + 1];
         ArrayList<Integer> winningNumList = new ArrayList<>(); // 결과 기록
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
         String[] winningNumsString = SC.nextLine().split(", ");
@@ -46,7 +46,6 @@ public class LottoMachine {
         int bonusBallNum = Integer.parseInt(SC.nextLine());
         for (LottoTicket ticket : tickets) {
             int matchNumbersCnt = ticket.matchNumbersCnt(winningNumList);
-            System.out.println("matchNumbersCnt = " + matchNumbersCnt);
             if (matchNumbersCnt == 5) {
                 if (ticket.winSecondPride(bonusBallNum)) {
                     result[2] += 1;
@@ -64,13 +63,19 @@ public class LottoMachine {
                 continue;
             }
         }
-        for (int i : result) {
-            System.out.println("i = " + i);
+        int[] price = {2000000000, 30000000, 1500000, 50000, 5000};
+        int priceSum = 0;
+        for (int i = 0; i < 5; i++) {
+            System.out.println("개 일치 ("+price[i]+")- "+result[i+1]+"개");
+            priceSum += (result[i + 1] * price[i]);
         }
-
-        // tickets를 돌려서 1등, 3등, 4등, 5등을 기록 -> 이후 보너스볼을 입력해주세요 문구 출력.
-        // 3등은 따로 기록해두고 거기서 보너스볼이 있는지를 확인. 보너스볼은 앞에 나온 여섯 숫자랑 다른 숫자여야 함.
-        // 당첨 통계랑 총 수익률 계산.
+        return priceSum;
+        // 3개 일치 (5000원)- 1개
+        // 4개 일치 (50000원)- 0개
+        // 5개 일치 (1500000원)- 0개
+        // 5개 일치, 보너스 볼 일치(30000000원) - 0개
+        // 6개 일치 (2000000000원)- 0개
+        // 총 수익률은 35.7%입니다.
     }
 
     private int validateStringToInteger(String input) {

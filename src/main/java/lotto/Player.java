@@ -8,6 +8,7 @@ public class Player {
     public static int LOTTO_PRICE = 1000;
     private int inputMoney = 0;
     private int purchaseAmount = 0;
+    private int priceAmount = 0;
     private int lottoCntPurchase = 0;
     private int manualLottoCnt;
     private ArrayList<LottoTicket> tickets = new ArrayList<>();
@@ -21,7 +22,9 @@ public class Player {
         takeTheLottoManually();
         lottoMachine.takeLottoAuto(lottoCntPurchase - manualLottoCnt);
         showAllTickets();
-        lottoMachine.getResult();
+        priceAmount = lottoMachine.getResult();
+        System.out.println("purchaseAmount = " + purchaseAmount);
+        System.out.println("priceAmount = " + priceAmount);
     }
 
     private void showAllTickets() {
