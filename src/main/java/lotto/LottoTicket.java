@@ -1,50 +1,57 @@
 package lotto;
 
+import static util.Constant.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LottoTicket {
-    private int[] lottoNums = new int[6];
+    private int[] lottoBalls = new int[TOTAL_LOTTO_BALL_CNT];
+    private ArrayList<Integer> inputLottoBall;
 
-    public LottoTicket(ArrayList<Integer> lottoNum) {
-        for (int i = 0; i < 6; i++) {
-            if (!((0 < lottoNum.get(i)) & (lottoNum.get(i) <= 45))) {
-                throw new IllegalArgumentException("로또 번호는 1~45까지만 가능합니다.");
+    public LottoTicket(ArrayList<Integer> inputLottoBall) {
+        this.inputLottoBall = inputLottoBall;
+        for (int i = 0; i < TOTAL_LOTTO_BALL_CNT; i++) {
+            if (isOutOfRange(i)) {
+                throw new IllegalArgumentException(LOTTO_RANGE_ERROR_MESSAGE);
             }
-            this.lottoNums[i] = lottoNum.get(i);
+            this.lottoBalls[i] = inputLottoBall.get(i);
         }
     }
 
-    @Override
-    public String toString() {
-        String numbersOnTicket = "[";
-        for (int lottoNum : lottoNums) {
-            numbersOnTicket += lottoNum;
-            if (lottoNum != lottoNums[5]) {
-                numbersOnTicket += ", ";
-                continue;
-            }
-            numbersOnTicket += "]";
-        }
-        return numbersOnTicket;
+    private boolean isOutOfRange(int i) {
+        return !((LOTTO_BALL_MIN_NUM <= inputLottoBall.get(i)) & (inputLottoBall.get(i) <= LOTTO_BALL_MAX_NUM));
     }
 
-    public int matchNumbersCnt(ArrayList<Integer> winningNumList) {
-        int answer = 0;
-        for (int i = 0; i < 6; i++) {
-            if (winningNumList.get(i) == lottoNums[i]) {
-                answer += 1;
+    public int compareWinningNum(ArrayList<Integer> lottoWinningNumber) {
+        int sameLocationCnt = 0;
+        for (int i = 0; i < TOTAL_LOTTO_BALL_CNT; i++) {
+            if (lottoWinningNumber.get(i) == lottoBalls[i]) {
+                sameLocationCnt += 1;
             }
         }
-        return answer;
+        return sameLocationCnt;
     }
 
-    public boolean winSecondPride(int bonusBallNum) {
-        for (int lottoNum : lottoNums) {
+    public boolean isSecondPride(int bonusBallNum) {
+        for (int lottoNum : lottoBalls) {
             if (bonusBallNum == lottoNum) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        String stringLottoNumOnIt = "[";
+        for (int lottoBall : lottoBalls) {
+            stringLottoNumOnIt += lottoBall;
+            if (lottoBall != lottoBalls[TOTAL_LOTTO_BALL_CNT-1]) {
+                stringLottoNumOnIt += ", ";
+                continue;
+            }
+            stringLottoNumOnIt += "]";
+        }
+        return stringLottoNumOnIt;
     }
 }

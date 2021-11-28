@@ -1,11 +1,17 @@
 package lotto;
 
 import static lotto.Application.*;
+import static util.Constant.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class LottoMachine {
+    ArrayList<Integer> winningNum = new ArrayList<>(); // 결과 기록
+    private int bonusBallNum;
+    int[] result = new int[TOTAL_LOTTO_BALL_CNT];
+    int sumOfPrize = 0;
+
     private ArrayList<LottoTicket> tickets;
     Random random = new Random();
 
@@ -13,71 +19,82 @@ public class LottoMachine {
         this.tickets = tickets;
     }
 
-    public void takeLottoAuto(int autoLottoCnt) {
+    public void makeLottosAuto(int autoLottoCnt) {
+        ArrayList<Integer> eachLotto;
         for (int i = 0; i < autoLottoCnt; i++) {
-            makeLottoAutomatic();
+            eachLotto = makeLottoEachDigitAutomatic();
+            tickets.add(new LottoTicket(eachLotto));
         }
     }
 
-    private void makeLottoAutomatic() {
-        boolean[] alreadyShown = new boolean[45+1]; //디폴트가 false
-        int ballNum;
+    private ArrayList<Integer> makeLottoEachDigitAutomatic() {
+        boolean[] alreadyShown = new boolean[LOTTO_BALL_MAX_NUM + 1];
         ArrayList<Integer> lottoBallList = new ArrayList<>();
-        while (lottoBallList.size() != 6) {
-            ballNum = 1 + random.nextInt(45);
-            if (!alreadyShown[ballNum]) {
-                lottoBallList.add(ballNum);
-                alreadyShown[ballNum] = true;
+        int ballNum;
+        while (lottoBallList.size() != TOTAL_LOTTO_BALL_CNT) {
+            ballNum = 1 + random.nextInt(LOTTO_BALL_MAX_NUM);
+            if (alreadyShown[ballNum]) {
+                continue;
             }
+            lottoBallList.add(ballNum);
+            alreadyShown[ballNum] = true;
         }
-        tickets.add(new LottoTicket(lottoBallList));
+        return lottoBallList;
     }
 
-    public int getResult() { // 다시 로또머신으로 위치를 이동시키자. 그게 맞는거임. 로또기계가 결과를 출력해주는게 책임 분배를 잘 한거라고 생각함.
-        int[] result = new int[5 + 1];
-        ArrayList<Integer> winningNumList = new ArrayList<>(); // 결과 기록
+    public int getResult() {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-        String[] winningNumsString = SC.nextLine().split(", ");
-        for (String winningNumString : winningNumsString) {
-            int winningNum = validateStringToInteger(winningNumString);
-            winningNumList.add(winningNum);
-        }
+        makeWinningNum(winningNum);
         System.out.println("보너스 볼을 입력해 주세요.");
-        int bonusBallNum = Integer.parseInt(SC.nextLine());
+        bonusBallNum = Integer.parseInt(SC.nextLine());
         for (LottoTicket ticket : tickets) {
-            int matchNumbersCnt = ticket.matchNumbersCnt(winningNumList);
-            if (matchNumbersCnt == 5) {
-                if (ticket.winSecondPride(bonusBallNum)) {
-                    result[4] += 1;
-                    continue;
-                }
-                result[3] += 1;
-                continue;
-            }
-            if (matchNumbersCnt == 6) {
-                result[5] += 1;
-                continue;
-            }
-            if (matchNumbersCnt >= 3) {
-                result[5-matchNumbersCnt] += 1;
-                continue;
-            }
+            recordResult(ticket);
         }
-        //2000000000, 30000000, 1500000, 50000,
-        int[] price = {5000, 50000, 1500000, 30000000, 2000000000};
-        String[] sentence = {"3개 일치 (5000원)- ", "4개 일치 (50000원)- ", "5개 일치 (1500000원)- ",
-            " 5개 일치, 보너스 볼 일치(30000000원) - ", "6개 일치 (2000000000원)- "};
-        int priceSum = 0;
+
+        calculateSumOfPrize();
+        return sumOfPrize;
+    }
+
+    private void calculateSumOfPrize() {
         for (int i = 0; i < 5; i++) {
-            System.out.println(sentence[i] + result[i + 1] + "개");
-            priceSum += (result[i + 1] * price[i]);
+            System.out.println(RESULT_SENTENCE_FORWARD[i] + result[i] + RESULT_SENTENCE_BACK);
+            sumOfPrize += (result[i] * PRICE[i]);
         }
-        return priceSum;
+    }
+
+    private void recordResult(LottoTicket ticket) {
+        int matchNumbersCntWithWinningNum = ticket.compareWinningNum(winningNum);
+        if (matchNumbersCntWithWinningNum == 6) {
+            result[FIRST_PRIZE] += 1;
+            return;
+        }
+        if (matchNumbersCntWithWinningNum == 5) {
+            if (ticket.isSecondPride(bonusBallNum)) {
+                result[SECOND_PRIZE] += 1;
+                return;
+            }
+            result[THIRD_PRIZE] += 1;
+            return;
+        }
+        if (matchNumbersCntWithWinningNum == 4) {
+            result[FOURTH_PRIZE] += 1;
+        }
+        if (matchNumbersCntWithWinningNum == 3) {
+            result[FIFTH_PRIZE] += 1;
+        }
+    }
+
+    private void makeWinningNum(ArrayList<Integer> winningNumList) {
+        String[] winningNumsString = SC.nextLine().split(", ");
+        for (String eachDigitWinningNumString : winningNumsString) {
+            int eachDigitWinningNum = validateStringToInteger(eachDigitWinningNumString);
+            winningNumList.add(eachDigitWinningNum);
+        }
     }
 
     private int validateStringToInteger(String input) {
         if (!input.matches("-?\\d+")) {
-            throw new IllegalArgumentException("숫자를 입력해주세요");
+            throw new IllegalArgumentException(INPUT_INVALID_MESSAGE);
         }
         return Integer.parseInt(input);
     }

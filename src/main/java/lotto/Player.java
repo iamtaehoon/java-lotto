@@ -16,16 +16,14 @@ public class Player {
 
     public void playLotto() {
         putMoney();
-        lottoTotalCnt = inputMoney / LOTTO_PRICE;
-        purchaseAmount = lottoTotalCnt * LOTTO_PRICE;
         decideManualLottoCnt();
         takeLottosManually();
-        lottoMachine.takeLottoAuto(lottoTotalCnt - manualLottoCnt);
+        lottoMachine.makeLottosAuto(lottoTotalCnt - manualLottoCnt);
         showAllTickets();
         priceAmount = lottoMachine.getResult();
         // TODO: 나중에 결과값으로 바꿔줄거. 일단 제대로 결과가 출력되는지 확인을 위한 코드
-        // System.out.println("purchaseAmount = " + purchaseAmount);
-        // System.out.println("priceAmount = " + priceAmount);
+        System.out.println("purchaseAmount = " + purchaseAmount);
+        System.out.println("priceAmount = " + priceAmount);
     }
 
     private void showAllTickets() {
@@ -40,7 +38,6 @@ public class Player {
         for (int i = 0; i < manualLottoCnt; i++) {
             takeEachLottoManually();
         }
-
     }
 
     private void takeEachLottoManually() {
@@ -55,7 +52,7 @@ public class Player {
     }
 
     private void decideManualLottoCnt() {
-        System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+        System.out.println(DECIDE_MANUAL_LOTTO_COUNT_MESSAGE);
         String manualLottoCntString = SC.nextLine();
         validateManualLottoCntForm(manualLottoCntString);
     }
@@ -68,13 +65,13 @@ public class Player {
 
     private void validateManualLottoCntIsNotMinus(int manualLottoCnt) {
         if (manualLottoCnt < 0) {
-            throw new IllegalArgumentException("구매할 로또 개수는 음수가 될 수 없습니다.");
+            throw new IllegalArgumentException(CANT_NEGATIVE_MESSAGE);
         }
     }
 
     private void validateManualLottoCntIsSmallerThanTotal(int manualLottoCnt) {
         if (lottoTotalCnt < manualLottoCnt) {
-            throw new IllegalArgumentException("구매할 로또 개수보다 더 많은 수동 로또를 살 수 없습니다.");
+            throw new IllegalArgumentException(CANT_BUY_MORE_THAN_TOTAL_MESSAGE);
         }
     }
 
@@ -82,21 +79,23 @@ public class Player {
         System.out.println(PUT_MONEY_MESSAGE);
         String inputMoneyString = SC.nextLine(); // inputMoney는 로또 한장 이상의 금액이어야함.
         validateMoneyForm(inputMoneyString);
+        lottoTotalCnt = inputMoney / LOTTO_PRICE;
+        purchaseAmount = lottoTotalCnt * LOTTO_PRICE;
     }
 
     private void validateMoneyForm(String inputMoneyString) {
         this.inputMoney = validateStringToInteger(inputMoneyString);
         if (inputMoney < 0) {
-            throw new IllegalArgumentException("올바른 금액을 입력해주세요.");
+            throw new IllegalArgumentException(INPUT_INVALID_MESSAGE);
         }
         if (inputMoney < LOTTO_PRICE) {
-            throw new IllegalArgumentException("로또를 구매할 금액이 부족합니다.");
+            throw new IllegalArgumentException(LACK_OF_MONEY_MESSAGE);
         }
     }
 
     private int validateStringToInteger(String input) {
-        if (!input.matches("-?\\d+")) {
-            throw new IllegalArgumentException("숫자를 입력해주세요");
+        if (!input.matches(INT_REGEX)) {
+            throw new IllegalArgumentException(INPUT_INVALID_MESSAGE);
         }
         return Integer.parseInt(input);
     }
