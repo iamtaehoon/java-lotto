@@ -14,4 +14,8 @@ public class LottoTicket {
             this.lottoNum[i] = lottoNum.get(i);
         }
     }
+
+    public int[] getLottoNum() {
+        return lottoNum;
+    }
 }

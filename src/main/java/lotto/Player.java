@@ -11,6 +11,7 @@ public class Player {
     private int lottoCntPurchase = 0;
     private int manualLottoCnt;
     private ArrayList<LottoTicket> tickets = new ArrayList<>();
+    private LottoMachine lottoMachine = new LottoMachine(tickets);
 
     public void playLotto() {
         putMoney();
@@ -18,14 +19,20 @@ public class Player {
         purchaseAmount = lottoCntPurchase * LOTTO_PRICE;
         decideToBuyManualLottoCnt();
         takeTheLottoManually();
-        // takeTheLottoAuto();
+        lottoMachine.takeLottoAuto(lottoCntPurchase - manualLottoCnt);
+        System.out.println(tickets.stream().count());
+        for (LottoTicket ticket : tickets) {
+            for (int ballNum : ticket.getLottoNum()) {
+                System.out.print(ballNum+", ");
+            }
+            System.out.println();
+        }
     }
 
     private void takeTheLottoManually() {
         System.out.println("수동으로 구매할 번호를 입력해 주세요.");
         for (int i = 0; i < manualLottoCnt; i++) {
             String inputLottoNumbers = SC.nextLine();
-            System.out.println("inputLottoNumbers = " + inputLottoNumbers);
             String[] lottoDigitNumbersString = inputLottoNumbers.split(", ");
             ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
             for (String lottoDigitNumberString : lottoDigitNumbersString) {
