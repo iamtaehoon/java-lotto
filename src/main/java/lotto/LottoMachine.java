@@ -48,34 +48,31 @@ public class LottoMachine {
             int matchNumbersCnt = ticket.matchNumbersCnt(winningNumList);
             if (matchNumbersCnt == 5) {
                 if (ticket.winSecondPride(bonusBallNum)) {
-                    result[2] += 1;
+                    result[4] += 1;
                     continue;
                 }
                 result[3] += 1;
                 continue;
             }
             if (matchNumbersCnt == 6) {
-                result[1] += 1;
+                result[5] += 1;
                 continue;
             }
             if (matchNumbersCnt >= 3) {
-                result[8 - matchNumbersCnt] += 1;
+                result[5-matchNumbersCnt] += 1;
                 continue;
             }
         }
-        int[] price = {2000000000, 30000000, 1500000, 50000, 5000};
+        //2000000000, 30000000, 1500000, 50000,
+        int[] price = {5000, 50000, 1500000, 30000000, 2000000000};
+        String[] sentence = {"3개 일치 (5000원)- ", "4개 일치 (50000원)- ", "5개 일치 (1500000원)- ",
+            " 5개 일치, 보너스 볼 일치(30000000원) - ", "6개 일치 (2000000000원)- "};
         int priceSum = 0;
         for (int i = 0; i < 5; i++) {
-            System.out.println("개 일치 ("+price[i]+")- "+result[i+1]+"개");
+            System.out.println(sentence[i] + result[i + 1] + "개");
             priceSum += (result[i + 1] * price[i]);
         }
         return priceSum;
-        // 3개 일치 (5000원)- 1개
-        // 4개 일치 (50000원)- 0개
-        // 5개 일치 (1500000원)- 0개
-        // 5개 일치, 보너스 볼 일치(30000000원) - 0개
-        // 6개 일치 (2000000000원)- 0개
-        // 총 수익률은 35.7%입니다.
     }
 
     private int validateStringToInteger(String input) {
