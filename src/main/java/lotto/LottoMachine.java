@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import view.Input;
+
 public class LottoMachine {
     ArrayList<Integer> winningNum = new ArrayList<>(); // 결과 기록
     private int bonusBallNum;
@@ -44,10 +46,9 @@ public class LottoMachine {
     }
 
     public int getResult() {
-        System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-        makeWinningNum(winningNum);
-        System.out.println("보너스 볼을 입력해 주세요.");
-        bonusBallNum = Integer.parseInt(SC.nextLine());
+        winningNum = Input.putWinningNum();
+        bonusBallNum = Input.putBonusBallNum();
+
         tickets.stream().forEach(ticket -> recordResult(ticket));
         calculateSumOfPrize();
         return sumOfPrize;
@@ -80,15 +81,6 @@ public class LottoMachine {
         if (matchNumbersCntWithWinningNum == 3) {
             result[FIFTH_PRIZE] += 1;
         }
-    }
-
-    private void makeWinningNum(ArrayList<Integer> winningNumList) {
-        String[] winningNumsString = SC.nextLine().split(SPLIT_REGEX);
-        Arrays.stream(winningNumsString).forEach(eachDigitWinningNumString -> {
-            int eachDigitWinningNum = validateStringToInteger(eachDigitWinningNumString);
-            winningNumList.add(eachDigitWinningNum);
-        });
-
     }
 
     private int validateStringToInteger(String input) {
