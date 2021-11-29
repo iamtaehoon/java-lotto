@@ -4,6 +4,7 @@ import static lotto.Application.*;
 import static util.Constant.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class LottoMachine {
@@ -47,10 +48,7 @@ public class LottoMachine {
         makeWinningNum(winningNum);
         System.out.println("보너스 볼을 입력해 주세요.");
         bonusBallNum = Integer.parseInt(SC.nextLine());
-        for (LottoTicket ticket : tickets) {
-            recordResult(ticket);
-        }
-
+        tickets.stream().forEach(ticket -> recordResult(ticket));
         calculateSumOfPrize();
         return sumOfPrize;
     }
@@ -86,10 +84,11 @@ public class LottoMachine {
 
     private void makeWinningNum(ArrayList<Integer> winningNumList) {
         String[] winningNumsString = SC.nextLine().split(SPLIT_REGEX);
-        for (String eachDigitWinningNumString : winningNumsString) {
+        Arrays.stream(winningNumsString).forEach(eachDigitWinningNumString -> {
             int eachDigitWinningNum = validateStringToInteger(eachDigitWinningNumString);
             winningNumList.add(eachDigitWinningNum);
-        }
+        });
+
     }
 
     private int validateStringToInteger(String input) {

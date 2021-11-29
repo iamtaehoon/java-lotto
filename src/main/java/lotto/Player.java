@@ -4,6 +4,7 @@ import static lotto.Application.*;
 import static util.Constant.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player {
     private ArrayList<LottoTicket> tickets = new ArrayList<>();
@@ -45,6 +46,10 @@ public class Player {
         String inputLottoNumbers = SC.nextLine();
         String[] lottoDigitNumbersString = inputLottoNumbers.split(SPLIT_REGEX);
         ArrayList<Integer> lottoDigitNumbers = new ArrayList<>();
+        // Arrays.stream(lottoDigitNumbersString).forEach(lottoDigitNumberString -> {
+        //     int lottoNumber = validateStringToInteger(lottoDigitNumberString);
+        //     lottoDigitNumbers.add(lottoNumber);
+        // });
         for (String lottoDigitNumberString : lottoDigitNumbersString) {
             int lottoNumber = validateStringToInteger(lottoDigitNumberString);
             lottoDigitNumbers.add(lottoNumber);

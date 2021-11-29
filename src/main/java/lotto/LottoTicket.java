@@ -3,6 +3,7 @@ package lotto;
 import static util.Constant.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LottoTicket {
     private int[] lottoBalls = new int[TOTAL_LOTTO_BALL_CNT];
@@ -24,6 +25,7 @@ public class LottoTicket {
 
     public int compareWinningNum(ArrayList<Integer> lottoWinningNumber) {
         int sameLocationCnt = 0;
+        //TODO stream, 람다로 바꿀 방법 없나.
         for (int i = 0; i < TOTAL_LOTTO_BALL_CNT; i++) {
             if (lottoWinningNumber.get(i) == lottoBalls[i]) {
                 sameLocationCnt += 1;
@@ -33,12 +35,7 @@ public class LottoTicket {
     }
 
     public boolean isSecondPride(int bonusBallNum) {
-        for (int lottoNum : lottoBalls) {
-            if (bonusBallNum == lottoNum) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(lottoBalls).anyMatch(lottoBall -> lottoBall == bonusBallNum);
     }
 
     @Override
